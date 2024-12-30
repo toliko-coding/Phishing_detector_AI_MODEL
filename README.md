@@ -26,16 +26,13 @@ Features
 	•	Version Control: GitHub
 
  Setup Instructions
-	1.	Clone the repository:
-     git clone https://github.com/<your-username>/SMSNet.git
-     cd SMSNet
+	1.	Clone the repository: git clone https://github.com/<your-username>/SMSNet.git
+     		cd SMSNet
 
 	2.	Run the Machine Learning Model:
 	•	Step 1: Fetch and preprocess data:
- python3 model/fetch_and_preprocess_data.py
-
-
- 	Step 2: Train the model:
+ 		python3 model/fetch_and_preprocess_data.py 
+   		Step 2: Train the model:
 
   python3 model/trainmodel.py
 
