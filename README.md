@@ -6,6 +6,7 @@ SMSNet: AI-Powered Phishing Detection App
 SMSNet is an advanced phishing detection tool designed to protect users from malicious SMS messages. This app uses machine learning to analyze SMS content and determine whether it’s a phishing attempt. With real-time detection, user feedback integration, and educational resources, SMSNet ensures a safer messaging experience.
 
 Features
+
 	•	AI-Powered Detection: Detects phishing attempts using an AI model trained on SMS data.
 	•	Real-Time Protection: Analyzes SMS messages as they arrive, flagging potential threats instantly.
 	•	Interactive Learning: Continuously improves detection accuracy through user feedback.
@@ -13,12 +14,14 @@ Features
 	•	User-Friendly Design: Offers a sleek, responsive UI for a seamless user experience.
 
  How It Works
+ 
 	1.	Analyze Messages: Users paste suspicious SMS messages into the app.
 	2.	AI Model Evaluation: The app’s AI model predicts the likelihood of phishing.
 	3.	Feedback Integration: Users can provide feedback to help the AI learn and improve.
 	4.	Education: Users can access resources to learn more about phishing threats.
 
  Technology Stack
+ 
 	•	Frontend: HTML, CSS, JavaScript, Bootstrap
 	•	Machine Learning: TensorFlow.js
 	•	Data Parsing: PapaParse.js
