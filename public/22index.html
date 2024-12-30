@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phishing Detection</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script> <!-- Correctly include PapaParse -->
+    <script src="trainmodel.js"></script>
+</head>
+<body>
+    <h1>Phishing Detection</h1>
+    <textarea id="inputText" rows="4" cols="50" placeholder="Enter the message here..."></textarea><br>
+    <button onclick="predictMessage()">Check</button>
+    <p id="result"></p>
+    <p id="totalSMS">Total SMS Trained: <span id="smsCount"></span></p>
+
+    <script>
+        // Load the word index (this should match what was used during training)
+        async function loadWordIndex() {
+            const wordIndexResponse = await fetch('model/word_index.json');
+            const wordIndex = await wordIndexResponse.json();
+            return wordIndex;
+        }
+
+        // Function to make predictions
+        async function predictMessage() {
+            // Load the model from local storage
+            const model = await tf.loadLayersModel('localstorage://phishing-detection-model');
+
+            // Get the input text
+            const inputText = document.getElementById('inputText').value;
+
+            // Load the word index
+            const wordIndex = await loadWordIndex();
+
+            // Tokenize the input text
+            const sequence = inputText.toLowerCase().split(' ').map(word => wordIndex[word] || 0);
+
+            // Pad the sequence to the same length used during training
+            const maxlen = 100;
+            const paddedSequence = [...sequence, ...Array(maxlen - sequence.length).fill(0)].slice(0, maxlen);
+
+            // Make the prediction
+            const prediction = model.predict(tf.tensor2d([paddedSequence], [1, maxlen]));
+            const result = (await prediction.data())[0];
+
+            // Determine confidence percentage
+            const confidence = (result * 100).toFixed(2); // Convert to percentage and format to two decimal places
+
+            // Display result with confidence percentage
+            document.getElementById('result').innerText = result > 0.5 
+                ? `Phishing (Confidence: ${confidence}%)` 
+                : `Not Phishing (Confidence: ${(100 - confidence).toFixed(2)}%)`;
+        }
+
+        // Display the total number of SMS messages the model was trained on
+        document.getElementById('smsCount').innerText = localStorage.getItem('totalSMSCount') || '0';
+    </script>
+</body>
+</html>

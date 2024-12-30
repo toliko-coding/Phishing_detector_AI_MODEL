@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "firebase": "^10.13.0",
+    "punycode": "^2.3.1"
+  }
+}
