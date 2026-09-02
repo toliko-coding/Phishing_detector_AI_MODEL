@@ -16,6 +16,7 @@ async function trainModel() {
 
     // Save the total SMS count to local storage for later use
     localStorage.setItem('totalSMSCount', totalSMSCount);
+    window.dispatchEvent(new CustomEvent('smsnet:totalSMSCount', { detail: totalSMSCount }));
 
     // Map the data to messages and labels
     const messages = filteredData.map(row => row.messageContent);
@@ -33,14 +34,10 @@ async function trainModel() {
     });
 
     console.log(wordIndex);
-    // Save the word index to a JSON file
-    await fetch('model/word_index.json', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(wordIndex),
-    });
+    // Save the word index alongside the model so predictions use the same
+    // vocabulary the model was just trained on (static hosting can't accept
+    // a POST to word_index.json, so localStorage is the source of truth here)
+    localStorage.setItem('wordIndex', JSON.stringify(wordIndex));
 
     // Convert messages to sequences of integers based on the word index
     const sequences = messages.map(msg =>

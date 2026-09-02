@@ -1,4 +1,6 @@
-<html><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
   <!-- Basic -->
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -6,12 +8,12 @@
   <!-- Mobile Metas -->
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <!-- Site Metas -->
-  <meta name="keywords" content="">
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <link rel="shortcut icon" href="images/favicon.png" type="">
+  <meta name="keywords" content="phishing, sms, ai, detection, security">
+  <meta name="description" content="SMSNet is an AI-powered tool that detects phishing attempts in SMS messages in real time using a TensorFlow.js model.">
+  <meta name="author" content="SMSNet">
+  <link rel="shortcut icon" href="images/favicon.png" type="image/png">
 
-  <title> SMSNet </title>
+  <title>SMSNet - AI Phishing Detection</title>
 
   <!-- bootstrap core css -->
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
@@ -29,9 +31,6 @@
   <link href="css/style.css" rel="stylesheet">
   <!-- responsive style -->
   <link href="css/responsive.css" rel="stylesheet">
-  <title>Phishing Detection</title>
-    
-
 </head>
 
 <body>
@@ -45,7 +44,7 @@
     </div>
 
     <!-- header section strats -->
-    <header class="header_section">
+    <header class="header_section"> 
       <div class="container-fluid">
         <nav class="navbar navbar-expand-lg custom_nav-container ">
           <a class="navbar-brand" href="index.html">
@@ -174,6 +173,98 @@
   <!-- <h1>Phishing Detection</h1> -->
 
   <div class="heading_container heading_center">
+
+
+
+
+
+<!-- Chatbot Button -->
+<button class="chatbot-button" onclick="openChat()">💬</button>
+
+<!-- Chatbot Modal -->
+<div id="chatbotModal" class="modal">
+  <div class="modal-content">
+    <button class="close-button" onclick="closeChat()">✖</button>
+    <iframe src="https://www.chatbase.co/chatbot-iframe/nRU0ZZ-Cr5AgY4VilF-M7" width="100%" height="100%" style="border: none;"></iframe>
+  </div>
+</div>
+
+<style>
+  /* Chatbot Button Styling */
+  .chatbot-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 30px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  .chatbot-button:hover {
+    background-color: #45a049;
+  }
+
+  /* Chatbot Modal Styling */
+  .modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    z-index: 1000;
+  }
+  .modal-content {
+    position: fixed;
+    bottom: 10%;
+    right: 10%;
+    width: 400px;
+    height: 600px;
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  }
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #ff5c5c;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 30px;
+  }
+  .close-button:hover {
+    background-color: #ff4040;
+  }
+</style>
+
+<script>
+  // Function to open the chatbot modal
+  function openChat() {
+    document.getElementById('chatbotModal').style.display = 'block';
+  }
+
+  // Function to close the chatbot modal
+  function closeChat() {
+    document.getElementById('chatbotModal').style.display = 'none';
+  }
+</script>
+
+
     <h2>
       Check with <span>AI</span>
       <p id="totalSMS" class="text-center">Total SMS Trained: <span id="smsCount">0</span></p>
@@ -285,7 +376,7 @@
       <div class="row">
         <div class="col-md-6 ">
           <div class="img-box">
-            <img src="images/SMSnetFeatures.png" alt="" height="350px" width="400px">
+            <img src="images/about-img.png" alt="" height="350px" width="400px">
           </div>
         </div>
         <div class="col-md-6">
@@ -547,6 +638,12 @@
 <script>
   // Load the word index (this should match what was used during training)
   async function loadWordIndex() {
+      // Prefer the vocabulary the model was just trained on in this session;
+      // fall back to the checked-in word index if training hasn't run yet.
+      const stored = localStorage.getItem('wordIndex');
+      if (stored) {
+          return JSON.parse(stored);
+      }
       const wordIndexResponse = await fetch('model/word_index.json');
       const wordIndex = await wordIndexResponse.json();
       return wordIndex;
@@ -593,6 +690,9 @@
 
   // Display the total number of SMS messages the model was trained on
   document.getElementById('smsCount').innerText = localStorage.getItem('totalSMSCount') || '0';
+  window.addEventListener('smsnet:totalSMSCount', (e) => {
+      document.getElementById('smsCount').innerText = e.detail;
+  });
 </script>
 
 

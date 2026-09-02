@@ -1,4 +1,12 @@
 {
+  "name": "smsnet-phishing-detector",
+  "version": "1.0.0",
+  "description": "AI-powered SMS phishing detector using TensorFlow.js, with Firebase-backed feedback and retraining.",
+  "private": true,
+  "scripts": {
+    "start": "python3 -m http.server 5000 --directory public",
+    "deploy": "firebase deploy"
+  },
   "dependencies": {
     "firebase": "^10.13.0",
     "punycode": "^2.3.1"
